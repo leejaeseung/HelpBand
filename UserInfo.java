@@ -1,11 +1,19 @@
+import java.util.ArrayList;
+
 public class UserInfo {
+
     private String name;
     private int age;
     private int personalNum;
-    private String[] ProtectorList;
+    private ArrayList<Integer> ProtectorList;
 
-    public UserInfo(String name, int age, int personalNum, String ProtectorID){
-
+    public UserInfo(String name, int age, int personalNum){
+        this.name = name;
+        this.age = age;
+        this.personalNum = personalNum;
+    }
+    public void addProtector(int ProtectorID){
+        this.ProtectorList.add(ProtectorID);
     }
     public String getName() {
         return name;
@@ -19,9 +27,7 @@ public class UserInfo {
         return personalNum;
     }
 
-    public String[] getProtectorList() {
+    public ArrayList<Integer> getProtectorList() {
         return ProtectorList;
     }
-
-
 }

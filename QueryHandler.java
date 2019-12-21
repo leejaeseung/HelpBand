@@ -5,18 +5,18 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class ServerDB {
+public class QueryHandler {
 
 	private int key = 0;
 	private Connection conn = null;
 	private java.sql.ResultSet curs;
 
-	public ServerDB() {
+	public QueryHandler() {
 		connectDB();
 		
 		// test code
 		try {
-			this.insertUser("진성호", "male", 24);
+			this.insertUserInfo("진성호", "9999991111111", "male", 24);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -58,8 +58,8 @@ public class ServerDB {
 		}
 	}
 
-	public String generateUsercode() {
-		String usercode = "";
+	public String generateCode() {
+		String code = "";
 
 		try {
 			MessageDigest md = MessageDigest.getInstance("MD5");
@@ -72,31 +72,32 @@ public class ServerDB {
 				sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
 			}
 
-			usercode = sb.toString();
+			code = sb.toString();
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
-			usercode = null;
+			code = null;
 		}
 
-		return usercode;
+		return code;
 	}
 
-	public void insertUser(String name, String gender, int age) throws SQLException {
-		String query = "insert into User value (?, ?, ?, ?)";
-		String newUsercode = generateUsercode();
+	public void insertUserInfo(String name, String personalNumber, String gender, int age) throws SQLException {
+		String query = "insert into userInfo value (?, ?, ?, ?, ?)";
+		String newUsercode = generateCode();
 		PreparedStatement stmt = conn.prepareStatement(query);
 
 		stmt.setString(1, newUsercode);
 		stmt.setString(2, name);
-		stmt.setString(3, gender);
-		stmt.setInt(4, age);
+		stmt.setString(3, personalNumber);
+		stmt.setString(4, gender);
+		stmt.setInt(5, age);
 
 		stmt.executeUpdate();
 	}
 	
 	public void insertUserStatus(String usercode, int pulse, float temperature) throws SQLException {
-		String query = "insert into UserStatus value (?, ?, ?)";
-		String newUsercode = generateUsercode();
+		String query = "insert into userStatus value (?, ?, ?)";
+		String newUsercode = generateCode();
 		PreparedStatement stmt = conn.prepareStatement(query);
 
 		stmt.setString(1, newUsercode);
@@ -106,4 +107,27 @@ public class ServerDB {
 		stmt.executeUpdate();
 	}
 	
+	public void insertProtector(String name, String personalNumber, String phone1, String phone2) throws SQLException {
+		String query = "insert into protector value (?, ?, ?, ?, ?)";
+		String newProtectorcode = generateCode();
+		PreparedStatement stmt = conn.prepareStatement(query);
+
+		stmt.setString(1, newProtectorcode);
+		stmt.setString(2, name);
+		stmt.setString(3, personalNumber);
+		stmt.setString(4, phone1);
+		stmt.setString(5, phone2);
+
+		stmt.executeUpdate();
+	}
+	
+	public void insertMatching(String usercode, String protectorcode) throws SQLException {
+		String query = "insert into matching value (?, ?)";
+		PreparedStatement stmt = conn.prepareStatement(query);
+
+		stmt.setString(1, usercode);
+		stmt.setString(2, protectorcode);
+
+		stmt.executeUpdate();
+	}
 }

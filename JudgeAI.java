@@ -1,3 +1,4 @@
+
 import java.util.ArrayList;
 
 public class JudgeAI implements JudgeAI_IF, Provider{
@@ -5,7 +6,7 @@ public class JudgeAI implements JudgeAI_IF, Provider{
     private ArrayList<Observer> observers = new ArrayList<>();
     private UserStatus myUS;
 
-    public UserStatus diagnose(UserStatus US){
+    public String diagnose(UserStatus US){
         myUS = US;
         int temper = US.getTemperature();
         int pulse = US.getPulse();
@@ -15,7 +16,7 @@ public class JudgeAI implements JudgeAI_IF, Provider{
 
         if(temper >= 37 && temper <= 38 && pulse >= 60 && pulse <= 150){
             US.setSymptom("정상");
-            return US;
+            return US.getSymptom();
         }
         if(temper < 37){
             symptom += "저체온 ";
@@ -31,7 +32,7 @@ public class JudgeAI implements JudgeAI_IF, Provider{
         }
         US.setSymptom(symptom);
         Notify();
-        return US;
+        return US.getSymptom();
     }
     public void checkEmergency(){
         if(myUS.getTemperature() <= 35 || myUS.getPulse() > 300 || myUS.getTemperature() >= 40 || myUS.getPulse() < 30){

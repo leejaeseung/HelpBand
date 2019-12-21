@@ -1,3 +1,4 @@
+
 public interface Provider {
 
     public void addOb(Observer Ob);

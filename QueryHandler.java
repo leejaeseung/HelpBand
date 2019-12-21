@@ -4,10 +4,12 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class QueryHandler {
 
-	private int key = 0;
+	private int key = 1;
 	private Connection conn = null;
 	private java.sql.ResultSet curs;
 
@@ -16,7 +18,29 @@ public class QueryHandler {
 		
 		// test code
 		try {
-			this.insertUserInfo("진성호", "9999991111111", "male", 24);
+//			this.insertUserInfo("진성호", "9999991111111", "male", 24);
+//			this.getUserInfo("cfcd208495d565ef66e7dff9f98764da");
+//			this.insertUserStatus("cfcd208495d565ef66e7dff9f98764da", 121, (float) 36.2);
+//			insertProtector("홍길동", "8888881111111", "01033774979", "01033774979");
+//			insertMatching("cfcd208495d565ef66e7dff9f98764da", "c4ca4238a0b923820dcc509a6f75849b");
+			
+//			String[] protectors = this.getMatchingByUsercode("cfcd208495d565ef66e7dff9f98764da");
+//			for(int i=0; i<protectors.length; i++) {
+//				System.out.println(protectors[i]);
+//			}
+//			System.out.println("======");
+//			String[] users = this.getMatchingByProtectorcode("c4ca4238a0b923820dcc509a6f75849b");
+//			for(int i=0; i<users.length; i++) {
+//				System.out.println(users[i]);
+//			}
+			
+			String[][] statuses = this.getUserStatus("cfcd208495d565ef66e7dff9f98764da");
+			for(int i=0; i<statuses.length; i++) {
+				for(int j=0; j<statuses[0].length; j++) {
+					System.out.print(statuses[i][j] + " ");
+				}
+				System.out.println();
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -96,11 +120,10 @@ public class QueryHandler {
 	}
 	
 	public void insertUserStatus(String usercode, int pulse, float temperature) throws SQLException {
-		String query = "insert into userStatus value (?, ?, ?)";
-		String newUsercode = generateCode();
+		String query = "insert into userStatus (usercode, pulse, temperature) value (?, ?, ?)";
 		PreparedStatement stmt = conn.prepareStatement(query);
 
-		stmt.setString(1, newUsercode);
+		stmt.setString(1, usercode);
 		stmt.setInt(2, pulse);
 		stmt.setFloat(3, temperature);
 
@@ -129,5 +152,84 @@ public class QueryHandler {
 		stmt.setString(2, protectorcode);
 
 		stmt.executeUpdate();
+	}
+	
+	public String[] getUserInfo(String usercode) throws SQLException {
+		// 매개변수로 받은 usercode를 이용해 DB에서 해당하는 User의 정보들을 가져와
+		// String 배열로 만들어서 반환
+		
+		String[] infos = new String[5];
+		String query = "select * from userInfo where usercode = ?";
+		PreparedStatement stmt = conn.prepareStatement(query);
+		
+		stmt.setString(1, usercode);
+		
+		curs = stmt.executeQuery();
+		curs.next();
+		
+		for(int i=1; i<=5; i++) {
+			infos[i-1] = curs.getString(i);
+		}
+		
+		return infos;
+	}
+	
+	public String[][] getUserStatus(String usercode) throws SQLException {
+		// 매개변수인 usercode를 이용해 해당 User의 최근 10번의
+		// UserStatus를 DB에서 가져와 2차원 String 배열로 반환
+		
+		String[][] status = new String[10][4];
+		String query = "select * from userstatus where usercode = ? order by 'date' desc";
+		PreparedStatement stmt = conn.prepareStatement(query);
+		
+		stmt.setString(1, usercode);
+		
+		curs = stmt.executeQuery();
+		
+		for(int i=0; i<10 && curs.next(); i++) {
+			for(int j=2; j<=5; j++) {
+				status[i][j-2] = curs.getString(j);
+			}
+		}
+		
+		return status;
+	}
+	
+	public String[] getMatchingByUsercode(String usercode) throws SQLException {
+		// usercode를 이용해 해당 User와 연결된 모든 보호자들의 protectorcode를 가져와
+		// String 배열로 반환
+		
+		List<String> protectorcodes = new ArrayList<String>();
+		String query = "select protectorcode from matching where usercode = ?";
+		PreparedStatement stmt = conn.prepareStatement(query);
+		
+		stmt.setString(1, usercode);
+		
+		curs = stmt.executeQuery();
+		
+		while(curs.next()) {
+			protectorcodes.add(curs.getString(1));
+		}
+		
+		return protectorcodes.toArray(new String[protectorcodes.size()]);
+	}
+	
+	public String[] getMatchingByProtectorcode(String protectorcode) throws SQLException {
+		// protectorcode를 이용해 해당 보호자와 연결된 모든 User들의 usercode를 가져와
+		// String 배열로 반환
+		
+		List<String> usercodes = new ArrayList<String>();
+		String query = "select usercode from matching where protectorcode = ?";
+		PreparedStatement stmt = conn.prepareStatement(query);
+		
+		stmt.setString(1, protectorcode);
+		
+		curs = stmt.executeQuery();
+		
+		while(curs.next()) {
+			usercodes.add(curs.getString(1));
+		}
+		
+		return usercodes.toArray(new String[usercodes.size()]);
 	}
 }

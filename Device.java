@@ -1,4 +1,4 @@
 public interface Device {
 
-    public int measure();
+    public UserStatus measure(Bands myBand);
 }

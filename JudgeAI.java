@@ -29,9 +29,9 @@ public class JudgeAI implements JudgeAI_IF, Provider{
         if(pulse > 150){
             symptom += "고심박 ";
         }
-        US.setSymptom(symptom);
+        myUS.setSymptom(symptom);
         Notify();
-        return US;
+        return myUS;
     }
     public void checkEmergency(){
         if(myUS.getTemperature() <= 35 || myUS.getPulse() > 300 || myUS.getTemperature() >= 40 || myUS.getPulse() < 30){
@@ -40,11 +40,16 @@ public class JudgeAI implements JudgeAI_IF, Provider{
             }
         }
     }
+    public void match(ArrayList<WatchingApp> Watchers){
+        for (WatchingApp w: Watchers) {
+            addOb(w);
+        }
+    }
     public void addOb(Observer Ob) { observers.add(Ob); }
-    public void subOb(Observer Ob) { observers.remove(Ob); }
+    //public void subOb(Observer Ob) { observers.remove(Ob); }
     public void Notify(){
         for(Observer o : observers){
-            o.updateUserStatus();
+            o.updateUserStatus(myUS);
         }
     }
 }

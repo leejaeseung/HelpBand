@@ -12,10 +12,10 @@ public class CareApp {
         this.myDevice = new Adapter();
     }
     public void StartBioAnalyze() throws InterruptedException{
+        JudgeAI_IF JA = new JudgeAI();
         while(true) {
-            UserStatus temp = myDevice.measure(myBand);
-            System.out.println("체온 : " + temp.getTemperature());
-            System.out.println("심박 : " + temp.getPulse());
+            //System.out.println(JA.diagnose(myDevice.measure(myBand)));
+
             Thread.sleep(1000);
         }
     }

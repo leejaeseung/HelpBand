@@ -16,7 +16,6 @@ public class Main_Server {
 			ServerSocket serverSocket = new ServerSocket(PORT);
 			
 			System.out.println("서버 : 클라이언트 접속을 대기합니다.");
-			Server MyServer;
 			while(true) { //run forever..
 				Socket socket = serverSocket.accept();
 				Thread t = new Server(socket,Nets);
@@ -32,7 +31,6 @@ public class Main_Server {
 			System.out.println("serverSocket fail().."+e.getMessage());
 		}
 		finally{
-			
 			System.out.println("server 종");
 		}
 	}

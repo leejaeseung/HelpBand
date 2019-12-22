@@ -105,7 +105,7 @@ public class QueryHandler {
 		return code;
 	}
 
-	public void insertUserInfo(String name, String personalNumber, String gender, int age) throws SQLException {
+	public String insertUserInfo(String name, String personalNumber, String gender, int age) throws SQLException {
 		String query = "insert into userInfo value (?, ?, ?, ?, ?)";
 		String newUsercode = generateCode();
 		PreparedStatement stmt = conn.prepareStatement(query);
@@ -117,20 +117,23 @@ public class QueryHandler {
 		stmt.setInt(5, age);
 
 		stmt.executeUpdate();
+
+		return newUsercode;
 	}
 	
-	public void insertUserStatus(String usercode, int pulse, float temperature) throws SQLException {
-		String query = "insert into userStatus (usercode, pulse, temperature) value (?, ?, ?)";
+	public void insertUserStatus(String usercode, float temperature, int pulse, String symptom ) throws SQLException {
+		String query = "insert into userStatus (usercode, pulse, temperature, symptom) value (?, ?, ?, ?)";
 		PreparedStatement stmt = conn.prepareStatement(query);
 
 		stmt.setString(1, usercode);
 		stmt.setInt(2, pulse);
 		stmt.setFloat(3, temperature);
+		stmt.setString(4, symptom);
 
 		stmt.executeUpdate();
 	}
 	
-	public void insertProtector(String name, String personalNumber, String phone1, String phone2) throws SQLException {
+	public String insertProtector(String name, String personalNumber, String phone1, String phone2) throws SQLException {
 		String query = "insert into protector value (?, ?, ?, ?, ?)";
 		String newProtectorcode = generateCode();
 		PreparedStatement stmt = conn.prepareStatement(query);
@@ -142,6 +145,8 @@ public class QueryHandler {
 		stmt.setString(5, phone2);
 
 		stmt.executeUpdate();
+
+		return newProtectorcode;
 	}
 	
 	public void insertMatching(String usercode, String protectorcode) throws SQLException {

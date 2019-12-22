@@ -13,9 +13,6 @@ import java.awt.*;
 
 public class WatchingApp implements Observer{
 
-
-public class WatchingApp implements Observer{
-
     private int usercode;
     private UserStatus myUS;
     private JFrame JF;

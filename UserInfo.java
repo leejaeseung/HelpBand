@@ -6,11 +6,13 @@ public class UserInfo {
     private int age;
     private int personalNum;
     private ArrayList<WatchingApp> ProtectorList;
+    private String gender;
 
-    public UserInfo(String name, int age, int personalNum){
+    public UserInfo(String name, int personalNum, String gender,int age){
         this.name = name;
         this.age = age;
         this.personalNum = personalNum;
+        this.gender = gender;
         ProtectorList = new ArrayList<>();
     }
     public void addProtector(WatchingApp Protector){
@@ -26,6 +28,9 @@ public class UserInfo {
 
     public int getPersonalNum() {
         return personalNum;
+    }
+    public String getGender() {
+    	return gender;
     }
 
     public ArrayList<WatchingApp> getProtectorList() {

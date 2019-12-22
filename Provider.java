@@ -1,6 +1,6 @@
 public interface Provider {
 
-    public void addOb(Observer Ob);
-    public void subOb(Observer Ob);
-    public void Notify();
+    void addOb(Observer Ob);
+    //void subOb(Observer Ob);
+    void Notify();
 }

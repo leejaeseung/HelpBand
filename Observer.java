@@ -1,5 +1,5 @@
 public interface Observer {
 
-    public void updateUserStatus();
-    public void alert();
+    void updateUserStatus(UserStatus US);
+    void alert();
 }

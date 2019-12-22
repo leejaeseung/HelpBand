@@ -1,5 +1,8 @@
+import java.util.ArrayList;
+
 public interface JudgeAI_IF {
 
-    public UserStatus diagnose(UserStatus US);
-    public void checkEmergency();
+    UserStatus diagnose(UserStatus US);
+    void match(ArrayList<WatchingApp> Watchers);
+    void checkEmergency();
 }

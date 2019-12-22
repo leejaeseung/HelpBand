@@ -5,15 +5,18 @@ public class UserInfo {
     private String name;
     private int age;
     private int personalNum;
-    private ArrayList<Integer> ProtectorList;
+    private ArrayList<WatchingApp> ProtectorList;
+    private String gender;
 
-    public UserInfo(String name, int age, int personalNum){
+    public UserInfo(String name, int personalNum, String gender,int age){
         this.name = name;
         this.age = age;
         this.personalNum = personalNum;
+        this.gender = gender;
+        ProtectorList = new ArrayList<>();
     }
-    public void addProtector(int ProtectorID){
-        this.ProtectorList.add(ProtectorID);
+    public void addProtector(WatchingApp Protector){
+        this.ProtectorList.add(Protector);
     }
     public String getName() {
         return name;
@@ -26,8 +29,11 @@ public class UserInfo {
     public int getPersonalNum() {
         return personalNum;
     }
+    public String getGender() {
+    	return gender;
+    }
 
-    public ArrayList<Integer> getProtectorList() {
+    public ArrayList<WatchingApp> getProtectorList() {
         return ProtectorList;
     }
 }

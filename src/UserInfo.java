@@ -15,8 +15,9 @@ public class UserInfo {
         this.gender = gender;
         ProtectorList = new ArrayList<>();
     }
-    public void addProtector(WatchingApp Protector){
+    public void addProtector(WatchingApp Protector) {
         this.ProtectorList.add(Protector);
+
     }
     public String getName() {
         return name;
@@ -34,6 +35,6 @@ public class UserInfo {
     }
 
     public ArrayList<WatchingApp> getProtectorList() {
-        return ProtectorList;
+            return ProtectorList;
     }
 }

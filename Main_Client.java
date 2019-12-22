@@ -17,6 +17,7 @@ public class Main_Client {
 		else if(str.equals("2")) {
 			MyBand = new Band2();
 			new CareApp(MyBand);
+			
 		}
 		else {
 			System.out.println("잘못된 입력입니다.");
